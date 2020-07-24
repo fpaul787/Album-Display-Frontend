@@ -56,7 +56,7 @@ function App() {
 
       let newAlbums = generateRows(
         cardsPerRow,
-        result.data.slice(result.data.length - 6)
+        result.data.slice(result.data.length - 50)
       );
       setAlbums(newAlbums);
       setIsLoading(false);

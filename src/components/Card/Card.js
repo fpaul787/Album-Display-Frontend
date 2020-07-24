@@ -9,25 +9,27 @@ const Card = (props) => {
     <div className="card text-center shadow">
       <div className="overflow">
         <img
-          src={album.cover ? album.cover : default_img}
+          src={album.album_cover ? album.album_cover : default_img}
           alt="Image1"
           className="card-img-top"
         />
       </div>
       <div className="card-body text-dark">
-        <h4 className="card-title">{album.name ? album.name : "No Title"}</h4>
+        <div className="card-title">
+          <h4>{album.name ? album.name : "No Title"}</h4>
+        </div>
         {/* <p className="card-text text-secondary">
           Lorem ipsum Lorem ipsum Lorem ipsum
         </p> */}
         <div className="card-body-bio">
-          <h5 className="card-subtitle mb-2 text-muted">
+          <h5 className="card-subtitle mb-2">
             Artist:
             <span id="artist"> {album.artist}</span>
           </h5>
 
-          <h5 className="card-subtitle mb-2 text-muted">
+          <h5 className="card-subtitle mb-2">
             Release Date:
-            <span id="release-date">{album.release_date}</span>
+            <span id="release-date"> {album.release_date}</span>
           </h5>
         </div>
 
