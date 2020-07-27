@@ -1,5 +1,5 @@
-.App {
-  text-align: center;
+body {
+  background: radial-gradient(#bebdbd, #fff, #bebdbd);
 }
 
 .center {

@@ -3,7 +3,6 @@ import axios from "axios";
 import "./App.css";
 import Cards from "./components/Cards/Cards";
 import Loader from "./components/Loader/Loader";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 function generateRows(cardsPerRow, dataArray) {
   let data = dataArray;
@@ -18,12 +17,11 @@ function generateRows(cardsPerRow, dataArray) {
 }
 
 function App() {
-  let cardsPerRow = 3;
-
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    let cardsPerRow = 3;
     const fetchData = async () => {
       setIsLoading(true);
       const result = await axios("http://127.0.0.1:8000/api/album/albums/");
@@ -46,7 +44,7 @@ function App() {
           <Loader />
         </div>
       ) : (
-        <div className="App">
+        <div>
           {albums.map((row, index) => {
             return <Cards key={index} data={row} />;
           })}
