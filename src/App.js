@@ -5,32 +5,6 @@ import Cards from "./components/Cards/Cards";
 import Loader from "./components/Loader/Loader";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import img from "./assets/2_Low_Life_Muthas.jpg";
-
-function generateData(cardsPerRow) {
-  let data = [];
-
-  for (let i = 0; i < 6; i++) {
-    data.push({
-      id: i,
-      name: "Sugarhill Gang (album)",
-      release_date: "1980-2-7",
-      artist: "The Sugarhill Gang",
-      album_cover: i % 2 ? img : null,
-    });
-  }
-
-  let rows = [];
-  var amtOfRows = data.length / cardsPerRow;
-
-  for (let i = 0; i < amtOfRows; i++) {
-    rows.push(data.slice(i * cardsPerRow, i * cardsPerRow + 3));
-  }
-  return rows;
-
-  // return data;
-}
-
 function generateRows(cardsPerRow, dataArray) {
   let data = dataArray;
 
@@ -45,7 +19,6 @@ function generateRows(cardsPerRow, dataArray) {
 
 function App() {
   let cardsPerRow = 3;
-  var data = generateData(cardsPerRow);
 
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
