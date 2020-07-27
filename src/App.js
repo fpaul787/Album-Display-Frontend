@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
 import Cards from "./components/Cards/Cards";
+import Loader from "./components/Loader/Loader";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import img from "./assets/2_Low_Life_Muthas.jpg";
@@ -56,7 +57,7 @@ function App() {
 
       let newAlbums = generateRows(
         cardsPerRow,
-        result.data.slice(result.data.length - 50)
+        result.data.slice(result.data.length - 100)
       );
       setAlbums(newAlbums);
       setIsLoading(false);
@@ -68,12 +69,11 @@ function App() {
   return (
     <div>
       {isLoading ? (
-        <div>
-          <h1>Loading ...</h1>
+        <div className="center">
+          <Loader />
         </div>
       ) : (
         <div className="App">
-          {/* <h1>{console.log(albums)}</h1> */}
           {albums.map((row, index) => {
             return <Cards key={index} data={row} />;
           })}

@@ -9,7 +9,7 @@ const Card = (props) => {
     <div className="card text-center shadow">
       <div className="overflow">
         <img
-          src={album.album_cover ? album.album_cover : default_img}
+          src={album.cover ? album.cover : default_img}
           alt="Image1"
           className="card-img-top"
         />

@@ -1,3 +1,8 @@
 .App {
   text-align: center;
 }
+
+.center {
+  margin-left: 50%;
+  margin-top: 20%;
+}
