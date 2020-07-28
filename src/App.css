@@ -6,3 +6,26 @@ body {
   margin-left: 50%;
   margin-top: 20%;
 }
+
+.searchbar {
+  margin-top: 2%;
+  margin-left: 40%;
+  width: 15%;
+}
+
+@media screen and (max-width: 400px) {
+  html {
+    width: 100vw;
+    overflow-x: hidden;
+  }
+
+  .searchbar {
+    margin-left: 15%;
+    margin-right: 80%;
+    width: 50%;
+  }
+
+  .albums {
+    margin-right: 20%;
+  }
+}

@@ -28,7 +28,7 @@ function App() {
 
       let newAlbums = generateRows(
         cardsPerRow,
-        result.data.slice(result.data.length - 100)
+        result.data.slice(result.data.length - 200)
       );
       setAlbums(newAlbums);
       setIsLoading(false);
@@ -44,10 +44,22 @@ function App() {
           <Loader />
         </div>
       ) : (
-        <div>
-          {albums.map((row, index) => {
-            return <Cards key={index} data={row} />;
-          })}
+        <div className="right">
+          <div className="searchbar ">
+            <div className="input-group">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Search Album Name or Artist"
+              />
+            </div>
+          </div>
+
+          <div className="albums">
+            {albums.map((row, index) => {
+              return <Cards key={index} data={row} />;
+            })}
+          </div>
         </div>
       )}
     </div>

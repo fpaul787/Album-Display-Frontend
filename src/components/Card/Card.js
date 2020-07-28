@@ -18,9 +18,6 @@ const Card = (props) => {
         <div className="card-title">
           <h4>{album.name ? album.name : "No Title"}</h4>
         </div>
-        {/* <p className="card-text text-secondary">
-          Lorem ipsum Lorem ipsum Lorem ipsum
-        </p> */}
         <div className="card-body-bio">
           <h5 className="card-subtitle mb-2">
             Artist:
