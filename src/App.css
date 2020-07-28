@@ -13,6 +13,12 @@ body {
   width: 15%;
 }
 
+.results {
+  margin-left: 45%;
+  margin-top: 1%;
+  margin-bottom: -5%;
+}
+
 @media screen and (max-width: 350px) {
   html {
     width: 100vw;

@@ -19,6 +19,7 @@ function generateRows(cardsPerRow, dataArray) {
 function App() {
   const [albums, setAlbums] = useState([]);
   const [filteredAlbums, setFilteredAlbums] = useState([]);
+  const [numFilteredAlbums, setNumFilteredAlbums] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -31,8 +32,10 @@ function App() {
         cardsPerRow,
         result.data.slice(result.data.length - 6)
       );
+
       setAlbums(newAlbums);
       setFilteredAlbums(newAlbums);
+      setNumFilteredAlbums(result.data.slice(result.data.length - 6).length);
       setIsLoading(false);
     };
 
@@ -48,7 +51,10 @@ function App() {
     } else {
       albums.map((albumRow) =>
         albumRow.map((album) => {
-          if (album.name.toLowerCase().includes(searchQuery)) {
+          if (
+            album.name.toLowerCase().includes(searchQuery) ||
+            album.artist.toLowerCase().includes(searchQuery)
+          ) {
             albumsArr.push(album);
           }
         })
@@ -56,6 +62,7 @@ function App() {
 
       let cardsPerRow = 3;
       setFilteredAlbums(generateRows(cardsPerRow, albumsArr));
+      setNumFilteredAlbums(albumsArr.length);
     }
   };
 
@@ -66,7 +73,7 @@ function App() {
           <Loader />
         </div>
       ) : (
-        <div className="right">
+        <div>
           <div className="searchbar ">
             <div className="input-group">
               <input
@@ -78,6 +85,13 @@ function App() {
                 }}
               />
             </div>
+          </div>
+
+          {/* <h3 className="results">Results: {filteredAlbums.length * 3}</h3> */}
+          <div className="results">
+            <h3 type="button" class="btn btn-primary">
+              Albums <span class="badge badge-light">{numFilteredAlbums}</span>
+            </h3>
           </div>
 
           <div className="albums">
