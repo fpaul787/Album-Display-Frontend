@@ -18,6 +18,7 @@ function generateRows(cardsPerRow, dataArray) {
 
 function App() {
   const [albums, setAlbums] = useState([]);
+  const [filteredAlbums, setFilteredAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -28,14 +29,35 @@ function App() {
 
       let newAlbums = generateRows(
         cardsPerRow,
-        result.data.slice(result.data.length - 200)
+        result.data.slice(result.data.length - 6)
       );
       setAlbums(newAlbums);
+      setFilteredAlbums(newAlbums);
       setIsLoading(false);
     };
 
     fetchData();
   }, []);
+
+  const handleChange = (e) => {
+    let albumsArr = [];
+
+    let searchQuery = e.target.value.toLowerCase();
+    if (searchQuery === "") {
+      setFilteredAlbums(albums);
+    } else {
+      albums.map((albumRow) =>
+        albumRow.map((album) => {
+          if (album.name.toLowerCase().includes(searchQuery)) {
+            albumsArr.push(album);
+          }
+        })
+      );
+
+      let cardsPerRow = 3;
+      setFilteredAlbums(generateRows(cardsPerRow, albumsArr));
+    }
+  };
 
   return (
     <div>
@@ -51,12 +73,15 @@ function App() {
                 type="text"
                 className="form-control"
                 placeholder="Search Album Name or Artist"
+                onChange={(e) => {
+                  handleChange(e);
+                }}
               />
             </div>
           </div>
 
           <div className="albums">
-            {albums.map((row, index) => {
+            {filteredAlbums.map((row, index) => {
               return <Cards key={index} data={row} />;
             })}
           </div>

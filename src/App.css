@@ -13,7 +13,7 @@ body {
   width: 15%;
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 350px) {
   html {
     width: 100vw;
     overflow-x: hidden;
@@ -27,5 +27,22 @@ body {
 
   .albums {
     margin-right: 20%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  html {
+    width: 100vw;
+    overflow-x: hidden;
+  }
+
+  .searchbar {
+    margin-left: 20%;
+    margin-right: 80%;
+    width: 65%;
+  }
+
+  .albums {
+    margin-right: 10%;
   }
 }
