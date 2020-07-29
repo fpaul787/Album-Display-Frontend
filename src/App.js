@@ -28,14 +28,12 @@ function App() {
       setIsLoading(true);
       const result = await axios("http://127.0.0.1:8000/api/album/albums/");
 
-      let newAlbums = generateRows(
-        cardsPerRow,
-        result.data.slice(result.data.length - 6)
-      );
+      let tempAmt = result.data.length - 499;
+      let newAlbums = generateRows(cardsPerRow, result.data.slice(tempAmt));
 
       setAlbums(newAlbums);
       setFilteredAlbums(newAlbums);
-      setNumFilteredAlbums(result.data.slice(result.data.length - 6).length);
+      setNumFilteredAlbums(result.data.slice(tempAmt).length);
       setIsLoading(false);
     };
 
@@ -48,6 +46,9 @@ function App() {
     let searchQuery = e.target.value.toLowerCase();
     if (searchQuery === "") {
       setFilteredAlbums(albums);
+
+      let lastRowLength = albums[albums.length - 1].length - 3;
+      setNumFilteredAlbums(albums.length * 3 + lastRowLength);
     } else {
       albums.map((albumRow) =>
         albumRow.map((album) => {
@@ -87,10 +88,10 @@ function App() {
             </div>
           </div>
 
-          {/* <h3 className="results">Results: {filteredAlbums.length * 3}</h3> */}
           <div className="results">
-            <h3 type="button" class="btn btn-primary">
-              Albums <span class="badge badge-light">{numFilteredAlbums}</span>
+            <h3 className="btn btn-primary">
+              Albums{" "}
+              <span className="badge badge-light">{numFilteredAlbums}</span>
             </h3>
           </div>
 
