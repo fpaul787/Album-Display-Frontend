@@ -22,13 +22,15 @@ function App() {
   const [numFilteredAlbums, setNumFilteredAlbums] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const years = [2016];
+
   useEffect(() => {
     let cardsPerRow = 3;
     const fetchData = async () => {
       setIsLoading(true);
       const result = await axios("http://127.0.0.1:8000/api/album/albums/");
 
-      let tempAmt = result.data.length - 499;
+      let tempAmt = result.data.length - 175; // 2016 y parte de 2015
       let newAlbums = generateRows(cardsPerRow, result.data.slice(tempAmt));
 
       setAlbums(newAlbums);
@@ -67,6 +69,25 @@ function App() {
     }
   };
 
+  const handleDateChange = (e) => {
+    // console.log(e.target.textContent);
+    let albumsArr = [];
+
+    albums.map((albumRow) =>
+      albumRow.map((album) => {
+        let dateReleased = new Date(album.release_date);
+
+        if (dateReleased.getFullYear().toString() === e.target.textContent) {
+          albumsArr.push(album);
+        }
+      })
+    );
+
+    let cardsPerRow = 3;
+    setFilteredAlbums(generateRows(cardsPerRow, albumsArr));
+    setNumFilteredAlbums(albumsArr.length);
+  };
+
   return (
     <div>
       {isLoading ? (
@@ -93,6 +114,33 @@ function App() {
               Albums{" "}
               <span className="badge badge-light">{numFilteredAlbums}</span>
             </h3>
+          </div>
+
+          <div className="dropdown">
+            <button
+              className="btn btn-secondary dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              By year
+            </button>
+            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              {years.map((year) => {
+                return (
+                  <button
+                    className="dropdown-item"
+                    onClick={(e) => {
+                      handleDateChange(e);
+                    }}
+                  >
+                    {year}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           <div className="albums">
