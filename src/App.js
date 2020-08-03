@@ -21,8 +21,8 @@ function App() {
   const [filteredAlbums, setFilteredAlbums] = useState([]);
   const [numFilteredAlbums, setNumFilteredAlbums] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
-  const years = [2016];
+  const [years, setYears] = useState([]);
+  const [buttonText, setButtonText] = useState("Year");
 
   useEffect(() => {
     let cardsPerRow = 3;
@@ -30,17 +30,36 @@ function App() {
       setIsLoading(true);
       const result = await axios("http://127.0.0.1:8000/api/album/albums/");
 
-      let tempAmt = result.data.length - 175; // 2016 y parte de 2015
+      let tempAmt = result.data.length - 1000; // 2016 y parte de 2015???
       let newAlbums = generateRows(cardsPerRow, result.data.slice(tempAmt));
 
       setAlbums(newAlbums);
       setFilteredAlbums(newAlbums);
       setNumFilteredAlbums(result.data.slice(tempAmt).length);
       setIsLoading(false);
+
+      filterYears(result.data.slice(tempAmt));
     };
 
     fetchData();
   }, []);
+
+  const filterYears = (albums) => {
+    let tmpYears = [];
+
+    albums.forEach((album) => {
+      // console.log(album.name + " || " + album.release_date.substring(0, 4));
+      let dateReleased = new Date(album.release_date.substring(0, 4));
+      // console.log(dateReleased);
+      if (!tmpYears.includes(dateReleased.getFullYear())) {
+        console.log(album.name + " || " + album.release_date.substring(0, 4));
+
+        tmpYears.push(dateReleased.getFullYear());
+      }
+    });
+
+    setYears(tmpYears);
+  };
 
   const handleChange = (e) => {
     let albumsArr = [];
@@ -70,7 +89,6 @@ function App() {
   };
 
   const handleDateChange = (e) => {
-    // console.log(e.target.textContent);
     let albumsArr = [];
 
     albums.forEach((albumRow) =>
@@ -86,6 +104,7 @@ function App() {
     let cardsPerRow = 3;
     setFilteredAlbums(generateRows(cardsPerRow, albumsArr));
     setNumFilteredAlbums(albumsArr.length);
+    setButtonText(e.target.textContent);
   };
 
   return (
@@ -125,7 +144,7 @@ function App() {
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                By year
+                {buttonText}
               </button>
               <div
                 className="dropdown-menu"
@@ -134,6 +153,7 @@ function App() {
                 {years.map((year) => {
                   return (
                     <button
+                      key={year}
                       className="dropdown-item"
                       onClick={(e) => {
                         handleDateChange(e);
