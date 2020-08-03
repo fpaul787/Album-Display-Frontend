@@ -52,8 +52,8 @@ function App() {
       let lastRowLength = albums[albums.length - 1].length - 3;
       setNumFilteredAlbums(albums.length * 3 + lastRowLength);
     } else {
-      albums.map((albumRow) =>
-        albumRow.map((album) => {
+      albums.forEach((albumRow) =>
+        albumRow.forEach((album) => {
           if (
             album.name.toLowerCase().includes(searchQuery) ||
             album.artist.toLowerCase().includes(searchQuery)
@@ -73,8 +73,8 @@ function App() {
     // console.log(e.target.textContent);
     let albumsArr = [];
 
-    albums.map((albumRow) =>
-      albumRow.map((album) => {
+    albums.forEach((albumRow) =>
+      albumRow.forEach((album) => {
         let dateReleased = new Date(album.release_date);
 
         if (dateReleased.getFullYear().toString() === e.target.textContent) {
@@ -110,36 +110,40 @@ function App() {
           </div>
 
           <div className="results">
-            <h3 className="btn btn-primary">
-              Albums{" "}
-              <span className="badge badge-light">{numFilteredAlbums}</span>
-            </h3>
-          </div>
-
-          <div className="dropdown">
-            <button
-              className="btn btn-secondary dropdown-toggle"
-              type="button"
-              id="dropdownMenuButton"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              By year
-            </button>
-            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              {years.map((year) => {
-                return (
-                  <button
-                    className="dropdown-item"
-                    onClick={(e) => {
-                      handleDateChange(e);
-                    }}
-                  >
-                    {year}
-                  </button>
-                );
-              })}
+            <div className="amt">
+              <h3 className="btn btn-primary">
+                Albums{" "}
+                <span className="badge badge-light">{numFilteredAlbums}</span>
+              </h3>
+            </div>
+            <div className="dropdown">
+              <button
+                className="btn btn-secondary dropdown-toggle dropdownBtn"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                By year
+              </button>
+              <div
+                className="dropdown-menu"
+                aria-labelledby="dropdownMenuButton"
+              >
+                {years.map((year) => {
+                  return (
+                    <button
+                      className="dropdown-item"
+                      onClick={(e) => {
+                        handleDateChange(e);
+                      }}
+                    >
+                      {year}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
 

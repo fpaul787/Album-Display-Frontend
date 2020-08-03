@@ -14,9 +14,20 @@ body {
 }
 
 .results {
-  margin-left: 45%;
+  margin-left: 40%;
   margin-top: 1%;
-  margin-bottom: -5%;
+  margin-bottom: 5%;
+  width: 250px;
+}
+
+.dropdownBtn {
+  float: left;
+  margin-bottom: 5% !important;
+}
+
+.amt {
+  float: right;
+  margin-bottom: 5% !important;
 }
 
 @media screen and (max-width: 350px) {
@@ -36,7 +47,7 @@ body {
   }
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (min-width: 350px) and (max-width: 400px) {
   html {
     width: 100vw;
     overflow-x: hidden;
@@ -45,10 +56,63 @@ body {
   .searchbar {
     margin-left: 20%;
     margin-right: 80%;
-    width: 65%;
+    width: 60%;
   }
 
   .albums {
     margin-right: 10%;
+  }
+
+  .amt {
+    float: none;
+    margin-top: 5% !important;
+    margin-left: 20% !important;
+  }
+
+  .dropdownBtn {
+    float: none;
+    margin-top: 1% !important;
+    margin-left: 20% !important;
+  }
+
+  .results {
+    margin-left: 15%;
+    margin-top: 10% !important;
+    margin-bottom: 5% !important;
+  }
+}
+
+@media screen and (min-device-width: 401px) and (max-device-width: 1024px) {
+  html {
+    width: 100vw;
+    overflow-x: hidden;
+  }
+
+  .searchbar {
+    margin-left: 20%;
+    margin-right: 80%;
+    width: 60%;
+  }
+
+  .albums {
+    margin-right: 10%;
+  }
+
+  .amt {
+    float: none;
+    margin-top: 5% !important;
+    margin-left: 20% !important;
+  }
+
+  .dropdownBtn {
+    float: none;
+    margin-top: 1% !important;
+    margin-left: 20% !important;
+  }
+
+  .results {
+    margin-left: 15%;
+    margin-top: 5% !important;
+    margin-bottom: 5% !important;
   }
 }
