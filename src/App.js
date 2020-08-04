@@ -19,10 +19,11 @@ function generateRows(cardsPerRow, dataArray) {
 
 function App() {
   const [albums, setAlbums] = useState([]);
+  const [totalFilteredAlbums, setTotalFilteredAlbums] = useState([]);
   const [filteredAlbums, setFilteredAlbums] = useState([]);
   const [numFilteredAlbums, setNumFilteredAlbums] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [years, setYears] = useState([]);
+  const [years, setYears] = useState(["All"]);
   const [buttonText, setButtonText] = useState("Year");
   const [hasMore, setHasMore] = useState(true);
   const [rowsPerPage] = useState(2);
@@ -33,16 +34,23 @@ function App() {
       setIsLoading(true);
       const result = await axios("http://127.0.0.1:8000/api/album/albums/");
 
-      let tempAmt = result.data.length - 50; // 2016 y parte de 2015???
+      let tempAmt = result.data.length - result.data.length * 2; // 2016 y parte de 2015???
       let newAlbums = generateRows(cardsPerRow, result.data.slice(tempAmt));
 
       setAlbums(newAlbums);
 
+      setTotalFilteredAlbums(newAlbums.slice(0));
+
       // shallow copy of newAlbums
       setFilteredAlbums(newAlbums.slice(0, rowsPerPage));
+
+      // number of filtered albums
       setNumFilteredAlbums(result.data.slice(tempAmt).length);
-      setIsLoading(false);
+
       filterYears(result.data.slice(tempAmt));
+
+      // Data is available
+      setIsLoading(false);
     };
 
     fetchData();
@@ -50,7 +58,7 @@ function App() {
 
   const fetchAlbums = () => {
     // copy albums
-    let albs = albums.slice(0);
+    let albs = totalFilteredAlbums.slice(0);
 
     // copy albums from [filteredAlbums.length....albums.length - 1]
     albs = albs.slice(filteredAlbums.length);
@@ -69,7 +77,7 @@ function App() {
   };
 
   const filterYears = (tmpAlbums) => {
-    let tmpYears = [];
+    let tmpYears = ["All"];
 
     tmpAlbums.forEach((album) => {
       // console.log(album.name + " || " + album.release_date.substring(0, 4));
@@ -115,18 +123,35 @@ function App() {
   const handleDateChange = (e) => {
     let albumsArr = [];
 
-    albums.forEach((albumRow) =>
-      albumRow.forEach((album) => {
-        let dateReleased = new Date(album.release_date);
-
-        if (dateReleased.getFullYear().toString() === e.target.textContent) {
+    if (e.target.textContent === "All") {
+      albums.forEach((albumRow) =>
+        albumRow.forEach((album) => {
           albumsArr.push(album);
-        }
-      })
-    );
+        })
+      );
+    } else {
+      albums.forEach((albumRow) =>
+        albumRow.forEach((album) => {
+          let dateReleased = new Date(album.release_date);
+
+          if (dateReleased.getFullYear().toString() === e.target.textContent) {
+            albumsArr.push(album);
+          }
+        })
+      );
+    }
+
+    // shallow copy of newAlbums
+    // setFilteredAlbums(newAlbums.slice(0, rowsPerPage));
+
+    // number of filtered albums
+    // setNumFilteredAlbums(result.data.slice(tempAmt).length);
 
     let cardsPerRow = 3;
-    setFilteredAlbums(generateRows(cardsPerRow, albumsArr));
+    let newAlbs = generateRows(cardsPerRow, albumsArr);
+    setTotalFilteredAlbums(newAlbs.slice(0));
+
+    setFilteredAlbums(newAlbs.slice(0, rowsPerPage));
     setNumFilteredAlbums(albumsArr.length);
     setButtonText(e.target.textContent);
   };

@@ -2,6 +2,10 @@ body {
   background: radial-gradient(#bebdbd, #fff, #bebdbd);
 }
 
+.infinite-scroll-component {
+  overflow: hidden !important; /* Hide scrollbars */
+}
+
 .center {
   margin-left: 50%;
   margin-top: 20%;
@@ -16,18 +20,16 @@ body {
 .results {
   margin-left: 40%;
   margin-top: 1%;
-  margin-bottom: 5%;
-  width: 250px;
+  margin-bottom: 3%;
+  width: 15%;
 }
 
 .dropdownBtn {
   float: left;
-  margin-bottom: 5% !important;
 }
 
 .amt {
   float: right;
-  margin-bottom: 5% !important;
 }
 
 @media screen and (max-width: 350px) {
@@ -113,6 +115,6 @@ body {
   .results {
     margin-left: 15%;
     margin-top: 5% !important;
-    margin-bottom: 5% !important;
+    margin-bottom: 4% !important;
   }
 }
