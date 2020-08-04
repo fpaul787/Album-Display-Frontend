@@ -3,6 +3,7 @@ import axios from "axios";
 import "./App.css";
 import Cards from "./components/Cards/Cards";
 import Loader from "./components/Loader/Loader";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 function generateRows(cardsPerRow, dataArray) {
   let data = dataArray;
@@ -23,6 +24,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [years, setYears] = useState([]);
   const [buttonText, setButtonText] = useState("Year");
+  const [hasMore, setHasMore] = useState(true);
+  const [rowsPerPage] = useState(2);
 
   useEffect(() => {
     let cardsPerRow = 3;
@@ -30,29 +33,50 @@ function App() {
       setIsLoading(true);
       const result = await axios("http://127.0.0.1:8000/api/album/albums/");
 
-      let tempAmt = result.data.length - 1000; // 2016 y parte de 2015???
+      let tempAmt = result.data.length - 50; // 2016 y parte de 2015???
       let newAlbums = generateRows(cardsPerRow, result.data.slice(tempAmt));
 
       setAlbums(newAlbums);
-      setFilteredAlbums(newAlbums);
+
+      // shallow copy of newAlbums
+      setFilteredAlbums(newAlbums.slice(0, rowsPerPage));
       setNumFilteredAlbums(result.data.slice(tempAmt).length);
       setIsLoading(false);
-
       filterYears(result.data.slice(tempAmt));
     };
 
     fetchData();
-  }, []);
+  }, [rowsPerPage]);
 
-  const filterYears = (albums) => {
+  const fetchAlbums = () => {
+    // copy albums
+    let albs = albums.slice(0);
+
+    // copy albums from [filteredAlbums.length....albums.length - 1]
+    albs = albs.slice(filteredAlbums.length);
+
+    // console.log(albums);
+    let filteralbs = [];
+    if (albs.length >= rowsPerPage) {
+      filteralbs = filteredAlbums.concat(albs.splice(0, rowsPerPage));
+      setFilteredAlbums(filteralbs);
+
+      setHasMore(true);
+    } else {
+      // filteralbs = filteredAlbums.concat(albs.splice(0));
+      setHasMore(false);
+    }
+  };
+
+  const filterYears = (tmpAlbums) => {
     let tmpYears = [];
 
-    albums.forEach((album) => {
+    tmpAlbums.forEach((album) => {
       // console.log(album.name + " || " + album.release_date.substring(0, 4));
       let dateReleased = new Date(album.release_date.substring(0, 4));
       // console.log(dateReleased);
       if (!tmpYears.includes(dateReleased.getFullYear())) {
-        console.log(album.name + " || " + album.release_date.substring(0, 4));
+        // console.log(album.name + " || " + album.release_date.substring(0, 4));
 
         tmpYears.push(dateReleased.getFullYear());
       }
@@ -168,9 +192,20 @@ function App() {
           </div>
 
           <div className="albums">
-            {filteredAlbums.map((row, index) => {
-              return <Cards key={index} data={row} />;
-            })}
+            <InfiniteScroll
+              dataLength={filteredAlbums.length}
+              hasMore={hasMore}
+              next={fetchAlbums}
+              loader={
+                <div className="center">
+                  <Loader />
+                </div>
+              }
+            >
+              {filteredAlbums.map((row, index) => {
+                return <Cards key={index} data={row} />;
+              })}
+            </InfiniteScroll>
           </div>
         </div>
       )}
