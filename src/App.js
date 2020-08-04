@@ -3,6 +3,7 @@ import axios from "axios";
 import "./App.css";
 import Cards from "./components/Cards/Cards";
 import Loader from "./components/Loader/Loader";
+import ScrollArrow from "./components/ScrollArrow/ScrollArrow";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 function generateRows(cardsPerRow, dataArray) {
@@ -195,6 +196,7 @@ function App() {
               >
                 {buttonText}
               </button>
+
               <div
                 className="dropdown-menu"
                 aria-labelledby="dropdownMenuButton"
@@ -232,6 +234,8 @@ function App() {
               })}
             </InfiniteScroll>
           </div>
+
+          <ScrollArrow className="scrollBtn" />
         </div>
       )}
     </div>
