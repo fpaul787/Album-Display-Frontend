@@ -178,13 +178,7 @@ function App() {
             </div>
           </div>
 
-          <div className="results">
-            <div className="amt">
-              <h3 className="btn btn-primary">
-                Albums{" "}
-                <span className="badge badge-light">{numFilteredAlbums}</span>
-              </h3>
-            </div>
+          <div className="results">            
             <div className="dropdown">
               <button
                 className="btn btn-secondary dropdown-toggle dropdownBtn"
@@ -216,6 +210,12 @@ function App() {
                 })}
               </div>
             </div>
+            <div className="amt">
+              <h3 className="btn btn-primary">
+                Albums{" "}
+                <span className="badge badge-light">{numFilteredAlbums}</span>
+              </h3>
+            </div>
           </div>
 
           <div className="albums">
@@ -235,7 +235,7 @@ function App() {
             </InfiniteScroll>
           </div>
 
-          <ScrollArrow className="scrollBtn" />
+          <ScrollArrow  />
         </div>
       )}
     </div>

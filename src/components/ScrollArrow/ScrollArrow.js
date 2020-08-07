@@ -32,7 +32,7 @@ const ScrollArrow = () => {
       className="scrollTop"
       onClick={scrollTop}
       style={{
-        marginLeft: "50%",
+        marginLeft: "55%",
         height: 60,
         display: showScroll ? "flex" : "none",
       }}
