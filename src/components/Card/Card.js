@@ -30,7 +30,13 @@ const Card = (props) => {
           </h5>
         </div>
 
-        <p className="btn btn-outline-success">Album Info</p>
+        {album.album_link ? (
+          <a href={`${album.album_link}`} className="btn btn-outline-success">
+            Album Info
+          </a>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

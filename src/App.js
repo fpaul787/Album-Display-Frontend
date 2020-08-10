@@ -82,10 +82,13 @@ function App() {
 
     tmpAlbums.forEach((album) => {
       // console.log(album.name + " || " + album.release_date.substring(0, 4));
-      let dateReleased = new Date(album.release_date.substring(0, 4));
-      // console.log(dateReleased);
+
+      let intYear = parseInt(album.release_date.substring(0, 4)) + 1;
+
+      let dateReleased = new Date(intYear.toString());
       if (!tmpYears.includes(dateReleased.getFullYear())) {
         // console.log(album.name + " || " + album.release_date.substring(0, 4));
+        // console.log(dateReleased.getFullYear());
 
         tmpYears.push(dateReleased.getFullYear());
       }
@@ -178,7 +181,7 @@ function App() {
             </div>
           </div>
 
-          <div className="results">            
+          <div className="results">
             <div className="dropdown">
               <button
                 className="btn btn-secondary dropdown-toggle dropdownBtn"
@@ -235,7 +238,7 @@ function App() {
             </InfiniteScroll>
           </div>
 
-          <ScrollArrow  />
+          <ScrollArrow />
         </div>
       )}
     </div>
