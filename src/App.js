@@ -5,6 +5,7 @@ import Cards from "./components/Cards/Cards";
 import Loader from "./components/Loader/Loader";
 import ScrollArrow from "./components/ScrollArrow/ScrollArrow";
 import InfiniteScroll from "react-infinite-scroll-component";
+import {FiSearch} from 'react-icons/fi'
 
 function generateRows(cardsPerRow, dataArray) {
   let data = dataArray;
@@ -28,6 +29,7 @@ function App() {
   const [buttonText, setButtonText] = useState("Year");
   const [hasMore, setHasMore] = useState(true);
   const [rowsPerPage] = useState(2);
+  const [searchTerm, setSearchTerm] = useState("")
 
   useEffect(() => {
     let cardsPerRow = 3;
@@ -62,17 +64,26 @@ function App() {
     let albs = totalFilteredAlbums.slice(0);
 
     // copy albums from [filteredAlbums.length....albums.length - 1]
+    // console.log('filteredAblums')
+    // console.log(filteredAlbums)
+    // console.log('albs')
+    // console.log(albs)
     albs = albs.slice(filteredAlbums.length);
+    // console.log('altered')
+    // console.log(albs);
+
 
     // console.log(albums);
     let filteralbs = [];
+    // console.log(albs.length + " " + rowsPerPage)
     if (albs.length >= rowsPerPage) {
       filteralbs = filteredAlbums.concat(albs.splice(0, rowsPerPage));
       setFilteredAlbums(filteralbs);
-
       setHasMore(true);
     } else {
-      // filteralbs = filteredAlbums.concat(albs.splice(0));
+      filteralbs = filteredAlbums.concat(albs.splice(0));
+      setFilteredAlbums(filteralbs);
+
       setHasMore(false);
     }
   };
@@ -97,12 +108,15 @@ function App() {
     setYears(tmpYears);
   };
 
-  const handleChange = (e) => {
+  const handleChange = (searchQuery) => {
     let albumsArr = [];
 
-    let searchQuery = e.target.value.toLowerCase();
     if (searchQuery === "") {
-      setFilteredAlbums(albums);
+      
+      
+      setTotalFilteredAlbums(albums.slice(0));
+
+      setFilteredAlbums(albums.slice(0, rowsPerPage));
 
       let lastRowLength = albums[albums.length - 1].length - 3;
       setNumFilteredAlbums(albums.length * 3 + lastRowLength);
@@ -118,10 +132,21 @@ function App() {
         })
       );
 
+      // let cardsPerRow = 3;
+      // setFilteredAlbums(generateRows(cardsPerRow, albumsArr));
+      // setNumFilteredAlbums(albumsArr.length);
+      // console.log(filteredAlbums);
+
       let cardsPerRow = 3;
-      setFilteredAlbums(generateRows(cardsPerRow, albumsArr));
+      let newAlbs = generateRows(cardsPerRow, albumsArr);
+      // console.log(newAlbs)
+      setTotalFilteredAlbums(newAlbs.slice(0));
+
+      setFilteredAlbums(newAlbs.slice(0, rowsPerPage));
       setNumFilteredAlbums(albumsArr.length);
     }
+
+    setSearchTerm("")
   };
 
   const handleDateChange = (e) => {
@@ -172,13 +197,39 @@ function App() {
             <div className="input-group">
               <input
                 type="text"
+                onKeyPress={(event) => {
+                  if (event.key === "Enter") {
+                    handleChange(searchTerm);
+                  }
+                }}
+                value={searchTerm}
                 className="form-control"
                 placeholder="Search Album Name or Artist"
                 onChange={(e) => {
-                  handleChange(e);
+                  setSearchTerm(e.target.value);
                 }}
               />
+              <button
+                type="button"
+                className="btn btn-light"
+                onClick={() => {
+                  handleChange(searchTerm);
+                  // console.log(searchTerm);
+                }}
+              >
+                <FiSearch />
+              </button>
             </div>
+
+            <button
+              type="button"
+              className="btn btn-success"
+              onClick={() => {
+                handleChange("");
+              }}
+            >
+              Show All Albums
+            </button>
           </div>
 
           <div className="results">
