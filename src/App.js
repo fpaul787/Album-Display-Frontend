@@ -31,6 +31,10 @@ function App() {
   const [rowsPerPage] = useState(2);
   const [searchTerm, setSearchTerm] = useState("")
 
+  // new stuff for later
+  const [query, setQuery] = useState('')
+  const [searchYear, setSearchYear] = useState('')
+
   useEffect(() => {
     let cardsPerRow = 3;
     const fetchData = async () => {
@@ -57,7 +61,19 @@ function App() {
     };
 
     fetchData();
-  }, [rowsPerPage]);
+    // console.log("Query is " + query)
+    // console.log('Search year is ' + searchYear)
+
+    /**
+     * 1. Set setIsLoading(true)
+     * 2. Let django api do the work
+     * 3. once data comes back
+     * 4. setIsLoading(false)
+     */
+
+
+    // Clear both search year and search query
+  }, [rowsPerPage, query, searchYear]);
 
   const fetchAlbums = () => {
     // copy albums
@@ -109,17 +125,18 @@ function App() {
   };
 
   const handleChange = (searchQuery) => {
+    setIsLoading(true)
     let albumsArr = [];
 
+    setQuery(searchQuery)
+    
     if (searchQuery === "") {
-      
-      
+
       setTotalFilteredAlbums(albums.slice(0));
-
       setFilteredAlbums(albums.slice(0, rowsPerPage));
-
       let lastRowLength = albums[albums.length - 1].length - 3;
       setNumFilteredAlbums(albums.length * 3 + lastRowLength);
+
     } else {
       albums.forEach((albumRow) =>
         albumRow.forEach((album) => {
@@ -141,18 +158,21 @@ function App() {
       let newAlbs = generateRows(cardsPerRow, albumsArr);
       // console.log(newAlbs)
       setTotalFilteredAlbums(newAlbs.slice(0));
-
       setFilteredAlbums(newAlbs.slice(0, rowsPerPage));
+
       setNumFilteredAlbums(albumsArr.length);
     }
 
+    setIsLoading(false)
     setSearchTerm("")
   };
 
-  const handleDateChange = (e) => {
+  const handleYearChange = (year) => {
     let albumsArr = [];
 
-    if (e.target.textContent === "All") {
+    setSearchYear(year)
+
+    if (year === "All") {
       albums.forEach((albumRow) =>
         albumRow.forEach((album) => {
           albumsArr.push(album);
@@ -163,7 +183,7 @@ function App() {
         albumRow.forEach((album) => {
           let dateReleased = new Date(album.release_date);
 
-          if (dateReleased.getFullYear().toString() === e.target.textContent) {
+          if (dateReleased.getFullYear().toString() === year) {
             albumsArr.push(album);
           }
         })
@@ -182,7 +202,7 @@ function App() {
 
     setFilteredAlbums(newAlbs.slice(0, rowsPerPage));
     setNumFilteredAlbums(albumsArr.length);
-    setButtonText(e.target.textContent);
+    setButtonText(year);
   };
 
   return (
@@ -193,7 +213,7 @@ function App() {
         </div>
       ) : (
         <div>
-          <div className="searchbar ">
+          {/* <div className="searchbar ">
             <div className="input-group">
               <input
                 type="text"
@@ -214,7 +234,6 @@ function App() {
                 className="btn btn-light"
                 onClick={() => {
                   handleChange(searchTerm);
-                  // console.log(searchTerm);
                 }}
               >
                 <FiSearch />
@@ -230,10 +249,10 @@ function App() {
             >
               Show All Albums
             </button>
-          </div>
+          </div> */}
 
           <div className="results">
-            <div className="dropdown">
+            {/* <div className="dropdown">
               <button
                 className="btn btn-secondary dropdown-toggle dropdownBtn"
                 type="button"
@@ -255,7 +274,7 @@ function App() {
                       key={year}
                       className="dropdown-item"
                       onClick={(e) => {
-                        handleDateChange(e);
+                        handleYearChange(e.target.textContent);
                       }}
                     >
                       {year}
@@ -263,7 +282,7 @@ function App() {
                   );
                 })}
               </div>
-            </div>
+            </div> */}
             <div className="amt">
               <h3 className="btn btn-primary">
                 Albums{" "}
