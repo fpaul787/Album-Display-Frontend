@@ -5,7 +5,7 @@ import Cards from "./components/Cards/Cards";
 import Loader from "./components/Loader/Loader";
 import ScrollArrow from "./components/ScrollArrow/ScrollArrow";
 import InfiniteScroll from "react-infinite-scroll-component";
-import {FiSearch} from 'react-icons/fi'
+import { FiSearch } from "react-icons/fi";
 
 function generateRows(cardsPerRow, dataArray) {
   let data = dataArray;
@@ -20,31 +20,53 @@ function generateRows(cardsPerRow, dataArray) {
 }
 
 function App() {
-  const [albums, setAlbums] = useState([]);
   const [totalFilteredAlbums, setTotalFilteredAlbums] = useState([]);
   const [filteredAlbums, setFilteredAlbums] = useState([]);
   const [numFilteredAlbums, setNumFilteredAlbums] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [years, setYears] = useState(["All"]);
-  const [buttonText, setButtonText] = useState("Year");
+  const [years, setYears] = useState([""]);
   const [hasMore, setHasMore] = useState(true);
   const [rowsPerPage] = useState(2);
-  const [searchTerm, setSearchTerm] = useState("")
+  const [userInput, setUserInput] = useState("");
 
   // new stuff for later
-  const [query, setQuery] = useState('')
-  const [searchYear, setSearchYear] = useState('')
+  const [query, setQuery] = useState("");
+  
 
   useEffect(() => {
     let cardsPerRow = 3;
     const fetchData = async () => {
       setIsLoading(true);
-      const result = await axios("http://127.0.0.1:8000/api/album/albums/");
 
-      let tempAmt = result.data.length - result.data.length * 2; // 2016 y parte de 2015???
-      let newAlbums = generateRows(cardsPerRow, result.data.slice(tempAmt));
+      let response = null;
 
-      setAlbums(newAlbums);
+      // else
+      if (query !== "") {
+
+        let URL = ""
+        if (years.indexOf(query) > -1 ){
+          URL = `http://127.0.0.1:8000/api/album/year/${query}/`;
+        }else{
+          URL = `http://127.0.0.1:8000/api/album/albums/?search=${query}`;
+        }
+
+        response = await axios(
+          URL
+        );
+
+        if (response.data.length >= 6) {
+          setHasMore(true);
+        }
+      } else {
+
+        response = await axios("http://127.0.0.1:8000/api/album/albums/");
+
+        if (response.data.length >= 6) {
+          setHasMore(true);
+        }
+      }
+      let tempAmt = response.data.length - response.data.length * 2; // 2016 y parte de 2015???
+      let newAlbums = generateRows(cardsPerRow, response.data.slice(tempAmt));
 
       setTotalFilteredAlbums(newAlbums.slice(0));
 
@@ -52,46 +74,25 @@ function App() {
       setFilteredAlbums(newAlbums.slice(0, rowsPerPage));
 
       // number of filtered albums
-      setNumFilteredAlbums(result.data.slice(tempAmt).length);
+      setNumFilteredAlbums(response.data.slice(tempAmt).length);
 
-      filterYears(result.data.slice(tempAmt));
+      filterYears(response.data.slice(tempAmt));
 
       // Data is available
       setIsLoading(false);
     };
 
     fetchData();
-    // console.log("Query is " + query)
-    // console.log('Search year is ' + searchYear)
-
-    /**
-     * 1. Set setIsLoading(true)
-     * 2. Let django api do the work
-     * 3. once data comes back
-     * 4. setIsLoading(false)
-     */
-
-
-    // Clear both search year and search query
-  }, [rowsPerPage, query, searchYear]);
+  }, [rowsPerPage, query]);
 
   const fetchAlbums = () => {
     // copy albums
     let albs = totalFilteredAlbums.slice(0);
 
     // copy albums from [filteredAlbums.length....albums.length - 1]
-    // console.log('filteredAblums')
-    // console.log(filteredAlbums)
-    // console.log('albs')
-    // console.log(albs)
     albs = albs.slice(filteredAlbums.length);
-    // console.log('altered')
-    // console.log(albs);
 
-
-    // console.log(albums);
     let filteralbs = [];
-    // console.log(albs.length + " " + rowsPerPage)
     if (albs.length >= rowsPerPage) {
       filteralbs = filteredAlbums.concat(albs.splice(0, rowsPerPage));
       setFilteredAlbums(filteralbs);
@@ -105,104 +106,23 @@ function App() {
   };
 
   const filterYears = (tmpAlbums) => {
-    let tmpYears = ["All"];
+    let tmpYears = [];
 
-    tmpAlbums.forEach((album) => {
-      // console.log(album.name + " || " + album.release_date.substring(0, 4));
-
-      let intYear = parseInt(album.release_date.substring(0, 4)) + 1;
-
-      let dateReleased = new Date(intYear.toString());
-      if (!tmpYears.includes(dateReleased.getFullYear())) {
-        // console.log(album.name + " || " + album.release_date.substring(0, 4));
-        // console.log(dateReleased.getFullYear());
-
-        tmpYears.push(dateReleased.getFullYear());
-      }
-    });
+    for (let i = 1980; i < 2017; i++) {
+      tmpYears.push(i.toString());
+    }
 
     setYears(tmpYears);
   };
 
   const handleChange = (searchQuery) => {
-    setIsLoading(true)
-    let albumsArr = [];
-
-    setQuery(searchQuery)
-    
-    if (searchQuery === "") {
-
-      setTotalFilteredAlbums(albums.slice(0));
-      setFilteredAlbums(albums.slice(0, rowsPerPage));
-      let lastRowLength = albums[albums.length - 1].length - 3;
-      setNumFilteredAlbums(albums.length * 3 + lastRowLength);
-
-    } else {
-      albums.forEach((albumRow) =>
-        albumRow.forEach((album) => {
-          if (
-            album.name.toLowerCase().includes(searchQuery) ||
-            album.artist.toLowerCase().includes(searchQuery)
-          ) {
-            albumsArr.push(album);
-          }
-        })
-      );
-
-      // let cardsPerRow = 3;
-      // setFilteredAlbums(generateRows(cardsPerRow, albumsArr));
-      // setNumFilteredAlbums(albumsArr.length);
-      // console.log(filteredAlbums);
-
-      let cardsPerRow = 3;
-      let newAlbs = generateRows(cardsPerRow, albumsArr);
-      // console.log(newAlbs)
-      setTotalFilteredAlbums(newAlbs.slice(0));
-      setFilteredAlbums(newAlbs.slice(0, rowsPerPage));
-
-      setNumFilteredAlbums(albumsArr.length);
-    }
-
-    setIsLoading(false)
-    setSearchTerm("")
+    setQuery(searchQuery);
+    setUserInput("");
   };
 
-  const handleYearChange = (year) => {
-    let albumsArr = [];
-
-    setSearchYear(year)
-
-    if (year === "All") {
-      albums.forEach((albumRow) =>
-        albumRow.forEach((album) => {
-          albumsArr.push(album);
-        })
-      );
-    } else {
-      albums.forEach((albumRow) =>
-        albumRow.forEach((album) => {
-          let dateReleased = new Date(album.release_date);
-
-          if (dateReleased.getFullYear().toString() === year) {
-            albumsArr.push(album);
-          }
-        })
-      );
-    }
-
-    // shallow copy of newAlbums
-    // setFilteredAlbums(newAlbums.slice(0, rowsPerPage));
-
-    // number of filtered albums
-    // setNumFilteredAlbums(result.data.slice(tempAmt).length);
-
-    let cardsPerRow = 3;
-    let newAlbs = generateRows(cardsPerRow, albumsArr);
-    setTotalFilteredAlbums(newAlbs.slice(0));
-
-    setFilteredAlbums(newAlbs.slice(0, rowsPerPage));
-    setNumFilteredAlbums(albumsArr.length);
-    setButtonText(year);
+  const handleYearChange = (searchYear) => {
+    setQuery(searchYear)
+    setQuery(searchYear);
   };
 
   return (
@@ -213,27 +133,27 @@ function App() {
         </div>
       ) : (
         <div>
-          {/* <div className="searchbar ">
+          <div className="searchbar ">
             <div className="input-group">
               <input
                 type="text"
                 onKeyPress={(event) => {
                   if (event.key === "Enter") {
-                    handleChange(searchTerm);
+                    handleChange(userInput);
                   }
                 }}
-                value={searchTerm}
+                value={userInput}
                 className="form-control"
                 placeholder="Search Album Name or Artist"
                 onChange={(e) => {
-                  setSearchTerm(e.target.value);
+                  setUserInput(e.target.value);
                 }}
               />
               <button
                 type="button"
                 className="btn btn-light"
                 onClick={() => {
-                  handleChange(searchTerm);
+                  handleChange(userInput);
                 }}
               >
                 <FiSearch />
@@ -249,10 +169,30 @@ function App() {
             >
               Show All Albums
             </button>
-          </div> */}
+          </div>
 
           <div className="results">
-            {/* <div className="dropdown">
+            <select
+              className="custom-select"
+              onChange={(e) => {
+                handleYearChange(e.target.value);
+              }}
+            >
+              <option value="DEFAULT">Choose a year to filter ...</option>
+              {years.map((year) => {
+                return (
+                  <option
+                    key={year}
+                    className="dropdown-item"
+                    value={year}                    
+                  >
+                    {year}
+                  </option>
+                );
+              })}
+            </select>
+            
+            <div className="dropdown">
               <button
                 className="btn btn-secondary dropdown-toggle dropdownBtn"
                 type="button"
@@ -261,7 +201,7 @@ function App() {
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                {buttonText}
+                Year
               </button>
 
               <div
@@ -282,7 +222,7 @@ function App() {
                   );
                 })}
               </div>
-            </div> */}
+            </div>
             <div className="amt">
               <h3 className="btn btn-primary">
                 Albums{" "}
