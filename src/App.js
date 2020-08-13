@@ -45,9 +45,9 @@ function App() {
 
         let URL = ""
         if (years.indexOf(query) > -1 ){
-          URL = `http://127.0.0.1:8000/api/album/year/${query}/`;
+          URL = `http://albums-api.frantzapps.xyz/api/album/year/${query}/`;
         }else{
-          URL = `http://127.0.0.1:8000/api/album/albums/?search=${query}`;
+          URL = `http://albums-api.frantzapps.xyz/api/album/albums/?search=${query}`;
         }
 
         response = await axios(
@@ -59,7 +59,9 @@ function App() {
         }
       } else {
 
-        response = await axios("http://127.0.0.1:8000/api/album/albums/");
+        response = await axios(
+          "http://albums-api.frantzapps.xyz/api/album/albums/"
+        );
 
         if (response.data.length >= 6) {
           setHasMore(true);
