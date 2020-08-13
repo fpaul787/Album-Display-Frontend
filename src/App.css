@@ -34,6 +34,8 @@ body {
 }
 
 
+
+
 @media screen and (max-width: 350px) {
   html {
     width: 100vw;
@@ -63,6 +65,8 @@ body {
     width: 40%;
   }
 
+  
+
   .albums {
     margin-right: 10%;
   }
@@ -73,16 +77,24 @@ body {
     margin-left: 100% !important;
   }
 
-  .dropdownBtn {
-    float: none;
-    margin-top: 1% !important;
-    margin-left: 100% !important;
-  }
+  
 
   .results {
-    margin-left: 15%;
+    margin-left: 30%;
     margin-top: 10% !important;
     margin-bottom: 5% !important;
+  }
+
+  .custom-select{
+    width: 275% !important;
+  }
+
+  .custom-select option{
+    width: 100% !important;
+  }
+
+  .btn{
+    margin-top: 1% !important;
   }
 }
 
