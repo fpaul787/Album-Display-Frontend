@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/Album-Display-Frontend/static/css/main.e326b7e3.chunk.css",
+    "main.js": "/Album-Display-Frontend/static/js/main.53ad110a.chunk.js",
+    "main.js.map": "/Album-Display-Frontend/static/js/main.53ad110a.chunk.js.map",
+    "runtime-main.js": "/Album-Display-Frontend/static/js/runtime-main.4b287c87.js",
+    "runtime-main.js.map": "/Album-Display-Frontend/static/js/runtime-main.4b287c87.js.map",
+    "static/css/2.11829350.chunk.css": "/Album-Display-Frontend/static/css/2.11829350.chunk.css",
+    "static/js/2.8acbd9a6.chunk.js": "/Album-Display-Frontend/static/js/2.8acbd9a6.chunk.js",
+    "static/js/2.8acbd9a6.chunk.js.map": "/Album-Display-Frontend/static/js/2.8acbd9a6.chunk.js.map",
+    "index.html": "/Album-Display-Frontend/index.html",
+    "precache-manifest.1ca12eac28f03a0d630e789014b6d282.js": "/Album-Display-Frontend/precache-manifest.1ca12eac28f03a0d630e789014b6d282.js",
+    "service-worker.js": "/Album-Display-Frontend/service-worker.js",
+    "static/css/2.11829350.chunk.css.map": "/Album-Display-Frontend/static/css/2.11829350.chunk.css.map",
+    "static/css/main.e326b7e3.chunk.css.map": "/Album-Display-Frontend/static/css/main.e326b7e3.chunk.css.map",
+    "static/js/2.8acbd9a6.chunk.js.LICENSE.txt": "/Album-Display-Frontend/static/js/2.8acbd9a6.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.4b287c87.js",
+    "static/css/2.11829350.chunk.css",
+    "static/js/2.8acbd9a6.chunk.js",
+    "static/css/main.e326b7e3.chunk.css",
+    "static/js/main.53ad110a.chunk.js"
+  ]
+}
