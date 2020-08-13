@@ -31,7 +31,12 @@ const Card = (props) => {
         </div>
 
         {album.album_link ? (
-          <a href={`${album.album_link}`} className="btn btn-outline-success">
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href={`${album.album_link}`}
+            className="btn btn-outline-success"
+          >
             Album Info
           </a>
         ) : (

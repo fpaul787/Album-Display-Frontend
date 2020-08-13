@@ -192,37 +192,7 @@ function App() {
               })}
             </select>
             
-            <div className="dropdown">
-              <button
-                className="btn btn-secondary dropdown-toggle dropdownBtn"
-                type="button"
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                Year
-              </button>
-
-              <div
-                className="dropdown-menu"
-                aria-labelledby="dropdownMenuButton"
-              >
-                {years.map((year) => {
-                  return (
-                    <button
-                      key={year}
-                      className="dropdown-item"
-                      onClick={(e) => {
-                        handleYearChange(e.target.textContent);
-                      }}
-                    >
-                      {year}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+            
             <div className="amt">
               <h3 className="btn btn-primary">
                 Albums{" "}
