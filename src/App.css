@@ -24,17 +24,19 @@ body {
   width: 15%;
 }
 
-
 .amt {
   width: 100% !important;
 }
 
-.btn-primary{
-  height: 10% !important;  
+.btn-primary {
+  height: 10% !important;
 }
 
-
-
+.albums h3{
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
 
 @media screen and (max-width: 350px) {
   html {
@@ -65,8 +67,6 @@ body {
     width: 40%;
   }
 
-  
-
   .albums {
     margin-right: 10%;
   }
@@ -77,23 +77,21 @@ body {
     margin-left: 100% !important;
   }
 
-  
-
   .results {
     margin-left: 30%;
     margin-top: 10% !important;
     margin-bottom: 5% !important;
   }
 
-  .custom-select{
+  .custom-select {
     width: 275% !important;
   }
 
-  .custom-select option{
+  .custom-select option {
     width: 100% !important;
   }
 
-  .btn{
+  .btn {
     margin-top: 1% !important;
   }
 }
@@ -137,7 +135,6 @@ body {
   html {
     width: 100vw;
     overflow-x: hidden;
-
   }
 
   .searchbar {
@@ -149,5 +146,4 @@ body {
   .albums {
     margin-right: 5%;
   }
-
 }

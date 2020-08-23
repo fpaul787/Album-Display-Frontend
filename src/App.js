@@ -185,18 +185,13 @@ function App() {
               <option value="DEFAULT">Filter by Year</option>
               {years.map((year) => {
                 return (
-                  <option
-                    key={year}
-                    className="dropdown-item"
-                    value={year}                    
-                  >
+                  <option key={year} className="dropdown-item" value={year}>
                     {year}
                   </option>
                 );
               })}
             </select>
-            
-            
+
             <div className="amt">
               <h3 className="btn btn-primary">
                 Albums{" "}
@@ -206,6 +201,8 @@ function App() {
           </div>
 
           <div className="albums">
+            <h3>Scroll Down To See More</h3>
+
             <InfiniteScroll
               dataLength={filteredAlbums.length}
               hasMore={hasMore}
